@@ -1,8 +1,8 @@
 import React from 'react';
 import * as S from './styles';
 
-import kiwiImg from '../../assets/images/kiwi-bird-solid.svg'
-import signOutImg from '../../assets/images/icons/sign-out-alt-solid.svg'
+import kiwiImg from '../../assets/images/kiwi-bird-solid.svg';
+import signOutImg from '../../assets/images/icons/sign-out-alt-solid.svg';
 
 
 function PageHeader() {

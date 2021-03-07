@@ -116,7 +116,6 @@ export const SideOptions = styled.div`
             background-size: 16px;
         }
     }
-
 `;
 
 
