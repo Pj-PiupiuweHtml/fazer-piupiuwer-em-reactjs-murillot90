@@ -32,6 +32,17 @@ export const GlobalStyle = createGlobalStyle`
     button {
         cursor: pointer;
     }
+    
+    @media (max-width: 820px) {
+        html {
+            font-size: 55%;
+        }
+
+        body {
+            background: ${COLORS.primaryLighter};
+        }
+    }
+
 `
 
 export const GlobalTypography = createGlobalStyle`

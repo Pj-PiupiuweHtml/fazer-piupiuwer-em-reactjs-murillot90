@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { COLORS } from '../../assets/styles/themes';
 
+import searchIcon from '../../assets/images/icons/search-solid.svg'
 
 export const Header = styled.header`
     height: 80px;
@@ -14,6 +15,11 @@ export const Header = styled.header`
     z-index: 1;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
     padding-right: 16px;
+
+    @media (max-width: 820px) {
+        height: fit-content;
+    }
+
 `;
 
 export const Container = styled.div`
@@ -67,7 +73,7 @@ export const SideOptions = styled.div`
         border-radius: 12px;
         color: #667581;
         font-size: 13px;
-        background: ${COLORS.white} url('../images/search-solid.svg') no-repeat 268px center;
+        background: ${COLORS.white} url(${searchIcon}) no-repeat 268px center;
         background-size: 16px;
         box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
         font-family: 'Hind', sans-serif;
@@ -100,6 +106,15 @@ export const SideOptions = styled.div`
 
     button img {
         height: 24px;
+    }
+
+    @media (max-width: 820px) {
+        input {
+            margin: 16px 8px 16px 0 !important;
+            width: 150px !important;
+            background: #F5FFFF url(${searchIcon}) no-repeat 118px center;
+            background-size: 16px;
+        }
     }
 
 `;
