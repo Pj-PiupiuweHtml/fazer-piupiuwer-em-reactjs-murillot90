@@ -128,9 +128,13 @@ export const PiarInputFooter = styled.div`
 `;
 
 export const PiusSection = styled.div`
-    
-    
-    @media (max-width: 820px) {
+    display: flex;
+    flex-direction: column;
+    `;
 
-    }
+export const UnsuccessfulSearchTag = styled.h3`
+    text-align: center;
+    margin: 3.2rem;
+
+    display: none;
 `;

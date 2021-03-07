@@ -20,6 +20,7 @@ export const GlobalStyle = createGlobalStyle`
         background: ${COLORS.primaryBackground};
         color: ${COLORS.blackRegular};
 
+        overflow-x: hidden;
         width: 100vw;
     }
 
