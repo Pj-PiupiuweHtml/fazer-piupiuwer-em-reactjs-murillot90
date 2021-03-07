@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { COLORS } from '../styles/themes';
+import { COLORS } from './themes';
 
 export const GlobalStyle = createGlobalStyle`
     * {
@@ -8,6 +8,10 @@ export const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
     }
 
+    html {
+        font-size: 62.5%;
+    }
+    
     body {
         font-family: 'Hind', sans-serif;
         text-rendering: optimizeLegibility !important;
@@ -43,7 +47,7 @@ export const GlobalStyle = createGlobalStyle`
         }
     }
 
-`
+`;
 
 export const GlobalTypography = createGlobalStyle`
     h1 {
@@ -112,4 +116,4 @@ export const StylizedScrollbars = createGlobalStyle`
     ::-webkit-scrollbar-corner {
         background: transparent;
     }
-`
+`;
