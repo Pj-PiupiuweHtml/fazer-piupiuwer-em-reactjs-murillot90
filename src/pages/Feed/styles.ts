@@ -103,7 +103,6 @@ export const PiarInputFooter = styled.div`
     }
 
     button {
-        font-size: 1.4rem;
         background: #023047;
         color: #F5FFFF;
         display: flex;
