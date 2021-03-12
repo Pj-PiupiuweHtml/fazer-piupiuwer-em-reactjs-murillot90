@@ -80,7 +80,7 @@ export const LoginHeader = styled.div`
     justify-content: space-between;
     align-items: flex-end;
     width: 90%;
-    margin-bottom: 6.4rem;
+    margin-bottom: 3.6rem;
 
     h1 {
         font-size: 3.6rem;
@@ -117,7 +117,13 @@ export const LoginForm = styled.form`
 
 export const InputArea = styled.div`
     margin-bottom: 4.8rem;
+`;
 
+export const WarningText = styled.p`
+    margin-bottom: 4px;
+    color: ${COLORS.auxiliaryRed};
+    font-size: 1.2rem;
+    height: 2.4rem;
 `;
 
 export const ButtonArea = styled.div`

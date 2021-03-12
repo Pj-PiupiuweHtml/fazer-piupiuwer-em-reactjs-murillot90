@@ -1,4 +1,5 @@
 import React, { FormEvent, useState } from 'react';
+import { useAuth } from "../../hooks/useAuth"
 
 import * as S from './styles';
 import Button from '../../components/Basic/Button';
@@ -7,15 +8,15 @@ import Input from '../../components/Basic/Input';
 import deadBirdIcon from '../../assets/images/dead-kiwi-bird-solid.svg';
 import birdIcon from '../../assets/images/kiwi-bird-solid.svg';
 
-
 function Login() {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const { login, error } = useAuth();
 
-    const handleLogin = (e: FormEvent) => {
+    const sendLoginForm = (e: FormEvent) => {
         e.preventDefault();
-        alert("oi");
+        login({ email, password });
     }
 
     return (
@@ -31,23 +32,27 @@ function Login() {
                         <h1>Log In!</h1>
                         <img src={deadBirdIcon} alt="Pássaro Morto"/>
                     </S.LoginHeader>
-                    <S.LoginForm onSubmit={handleLogin}>
+                    <S.LoginForm onSubmit={sendLoginForm}>
                         <S.InputArea>
+                            <S.WarningText>
+                                {error && "Incorrect email or password :("}
+                            </S.WarningText>
                             <Input 
-                                labelText="Username"
-                                onChange={(e) => {setUsername(e.target.value)}}
+                                labelText="Email"
+                                onChange={(e) => {setEmail(e.target.value)}}
+                                type="text"
                             />
                             <Input 
                                 labelText="Password"
-                                onChange={(e) => {setUsername(e.target.value)}}
+                                onChange={(e) => {setPassword(e.target.value)}}
+                                type="password"
                             />
                         </S.InputArea>
                         <S.ButtonArea>
                             <Button type="submit" variant="CTA">
                                 Log In
                             </Button>
-
-                            <p>Don’t have an account? <a href="/feed">Sign Up here!</a></p>
+                            <p>Don’t have an account? <a href="#">Sign Up here!</a></p>
                         </S.ButtonArea>
                     </S.LoginForm>
                 </S.LoginArea>

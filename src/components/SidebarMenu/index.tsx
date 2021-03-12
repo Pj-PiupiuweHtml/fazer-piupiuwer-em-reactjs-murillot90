@@ -1,5 +1,6 @@
 import React from 'react';
 import * as S from './styles';
+import { useAuth } from "../../hooks/useAuth"
 
 import homeIcon from '../../assets/images/icons/home-solid.svg';
 import notificationsIcon from '../../assets/images/icons/bell-solid.svg';
@@ -7,13 +8,15 @@ import profileIcon from '../../assets/images/icons/user-solid.svg';
 import piarIcon from '../../assets/images/icons/feather-solid-white.svg';
 
 function SidebarMenu() {
+    const { user } = useAuth();
+
     return (
         <S.SidebarWrapper>
             <S.UserSummary>
-                <img src="https://github.com/murillot90.png" alt="Avatar"/>
+                <img src={user.photo} alt="Avatar"/>
                 <S.UserSummaryTexts>
-                    <h3>Murillo Teixeira</h3>
-                    <p>@murillo_t</p>
+                    <h3>{user.first_name + " " + user.last_name}</h3>
+                    <p>{"@" + user.username}</p>
                 </S.UserSummaryTexts>
             </S.UserSummary>
             <S.NavigationMenu>

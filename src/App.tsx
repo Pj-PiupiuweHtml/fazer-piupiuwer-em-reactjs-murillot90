@@ -1,10 +1,16 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
-import Routes from './pages/routes';
+import AppProvider from '../src/hooks'
+import Routes from './routes';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <Routes />
+    <BrowserRouter>
+      <AppProvider>
+          <Routes />
+      </AppProvider>
+    </BrowserRouter>
   );
 }
 export default App;

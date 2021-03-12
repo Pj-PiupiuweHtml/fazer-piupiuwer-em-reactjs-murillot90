@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from "../../hooks/useAuth"
 import axios from 'axios';
 import api from '../../services/api';
 
@@ -8,14 +9,16 @@ import SidebarMenu from '../../components/SidebarMenu';
 import SidebarMenuCollapsed from '../../components/SidebarMenuCollapsed';
 import PiuContainer from '../../components/PiuContainer';
 
-import { User, Piu, PiuLike} from '../../services/entities';
+import { User, Piu, PiuLike } from '../../services/entities';
 
 import * as S from './styles';
 
 import piarIcon from '../../assets/images/icons/feather-solid-white.svg';
-
+import userEvent from '@testing-library/user-event';
 
 function Feed() {
+    const { user } = useAuth();
+    const [piuLength, setPiuLenght] = useState(0);
 
     return (
         <>
@@ -25,12 +28,12 @@ function Feed() {
                 <SidebarMenuCollapsed/>
                 <S.FeedContent>
                     <S.PiarInputArea>
-                        <img src="https://github.com/murillot90.png" alt="Avatar"/>
+                        <img src={user.photo} alt="Avatar"/>
                         <S.PiarInput>
                             <textarea placeholder="Dê um piu!"></textarea>
                             <S.PiarInputWarning>Empty piu</S.PiarInputWarning>
                             <S.PiarInputFooter>
-                                <span>0/140</span>
+                                <span>{piuLength}/140</span>
                                 <button><img src={piarIcon} alt="Profile"/>Piar</button>
                             </S.PiarInputFooter>
                         </S.PiarInput>
@@ -39,7 +42,6 @@ function Feed() {
                         <PiuContainer/>
                         <PiuContainer/>
                         <PiuContainer/>
-
                     </S.PiusSection>
                     <S.UnsuccessfulSearchTag>
                         Não foi encontrado nenhum piu ou usuário :(

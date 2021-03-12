@@ -14,5 +14,8 @@ export const COLORS = {
     blackRegular: '#02020A',
     blackClickable: '#4A4A4E',
 
-    white: '#FFFFFC'
+    white: '#FFFFFC',
+
+    auxiliaryRed: '#FF4218',
+    auxiliaryGreen: '#FF4218'
 }
