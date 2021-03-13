@@ -1,7 +1,8 @@
 import React, 
         { createContext, 
             useState, 
-            useContext} from 'react';
+            useContext,
+            useEffect} from 'react';
 
 import { User } from '../services/entities';
 import api from '../services/api';
@@ -35,11 +36,21 @@ export const AuthProvider: React.FC = ({ children }) => {
         const user = localStorage.getItem('@Piupiuwer:user');
 
         if (user && token) {
+            api.defaults.headers.Authorization = `Bearer ${token}`;
             return { user: JSON.parse(user), token };
         }
 
         return {} as AuthState;
     });
+
+    useEffect(() => {
+        const getUser = async () => {
+            const response = await api.get('users?username=' + userData.user.username)
+            // console.log(response.data);
+            setUserData({user: response.data[0], token: userData.token});
+        }
+        userData?.user?.username && getUser()
+    }, [userData?.user?.username])
 
 	const login = async ({ email, password }: LoginCredentials) => {
         try {
@@ -68,8 +79,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     return (
         <AuthContext.Provider 
             value={{
-                user: userData.user,
-                token: userData.token,
+                ...(userData || {}),
                 error: error,
                 login,
                 logout

@@ -3,9 +3,9 @@ import * as S from './styles';
 import { useAuth } from "../../hooks/useAuth"
 
 import homeIcon from '../../assets/images/icons/home-solid.svg';
-import notificationsIcon from '../../assets/images/icons/bell-solid.svg';
 import profileIcon from '../../assets/images/icons/user-solid.svg';
 import piarIcon from '../../assets/images/icons/feather-solid-white.svg';
+import favFilledIcon from '../../assets/images/icons/star-solid.svg';
 
 function SidebarMenu() {
     const { user } = useAuth();
@@ -25,8 +25,8 @@ function SidebarMenu() {
                     Home
                 </a>
                 <a>
-                    <img src={notificationsIcon} alt="Notifications"/>
-                    Notifications
+                    <img src={favFilledIcon} alt="Notifications"/>
+                    Favorite Pius
                 </a>
                 <a>
                     <img src={profileIcon} alt="Profile"/>

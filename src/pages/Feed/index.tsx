@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from "../../hooks/useAuth"
 import axios from 'axios';
@@ -23,6 +23,8 @@ function Feed() {
     const [piuToPostLength, setPiuToPostLenght] = useState(0);
     const [piuToPostText, setPiuToPostText] = useState('');
     const [piuToPostError, setPiuToPostError] = useState('');
+
+    const piuInputRef = useRef(null as any);
 
     const loadPius = async () => {
         try {
@@ -88,6 +90,7 @@ function Feed() {
                                         }
                                     }}
                                     value={piuToPostText}
+                                    ref={piuInputRef}
                                     placeholder="Dê um piu!">
                                 </textarea>
                                 
@@ -100,7 +103,10 @@ function Feed() {
                                                 : ""
                                         }
                                     >{piuToPostLength}/140</span>
-                                    <button type="submit"><img src={piarIcon} alt="Profile"/>Piar</button>
+                                    <button type="submit" onClick={() => piuInputRef.current.focus()}>
+                                        <img src={piarIcon} alt="Profile"/>
+                                        Piar    
+                                    </button>
                                 
                                 </S.PiarInputFooter>
                             </form>

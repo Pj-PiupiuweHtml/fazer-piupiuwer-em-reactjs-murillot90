@@ -17,7 +17,6 @@ export const Piu = styled.header`
     @media (max-width: 820px) {
 
     }
-
 `;
 
 export const ProfilePicture = styled.div`
@@ -100,7 +99,7 @@ export const EditOptions = styled.div`
     }
 
     img:hover {
-        filter: brightness(160%);
+        filter: opacity(160%);
     }
 
 `;
@@ -200,13 +199,14 @@ export const Interaction = styled.div`
     }
 
     img:hover {
-        filter: brightness(160%);
+        filter: opacity(80%);
     }
 
     img {
         height: 1.6rem;
         margin-right: 0.6rem;
         margin-bottom: 0.2rem;
+        transition: 0.2s;
     }
 
     a {

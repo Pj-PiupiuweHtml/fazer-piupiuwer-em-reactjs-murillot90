@@ -7,11 +7,8 @@ import api from '../../services/api';
 import likeIcon from '../../assets/images/icons/heart-outline.svg';
 import likeFilledIcon from '../../assets/images/icons/heart-solid-red.svg';
 
-import commentIcon from '../../assets/images/icons/comment-outline.svg';
-import repiuIcon from '../../assets/images/icons/retweet-solid.svg';
-import pinIcon from '../../assets/images/icons/thumbtack-outline.svg';
-import pinFilledIcon from '../../assets/images/icons/thumbtack-solid.svg';
-import editIcon from '../../assets/images/icons/edit-regular.svg';
+import favIcon from '../../assets/images/icons/star-outline.svg';
+import favFilledYellowIcon from '../../assets/images/icons/star-solid-yellow.svg';
 import deleteIcon from '../../assets/images/icons/trash-alt-regular.svg';
 import unknownAvatar from '../../assets/images/unknown-avatar.png';
 
@@ -34,25 +31,25 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
     }
 
     const likePiu = async () => {
+        alreadyLiked ? setAlreadyLiked(false) : setAlreadyLiked(true)
+        alreadyLiked ? setLikes(likes - 1) : setLikes(likes + 1)
         try {
             const response = await api.post('/pius/like', data, {
                     headers: { Authorization: `Bearer ${token}`}, 
             })
-            response.data.operation == "like" ? setLikes(likes + 1) : setLikes(likes - 1)
-            alreadyLiked ? setAlreadyLiked(false) : setAlreadyLiked(true);
         } catch {
             alert("Tente dar like novamente mais tarde!");
         }
     }
 
     const favoritePiu = async () => {
+        alreadyFavorited ? setAlreadyFavorited(false) : setAlreadyFavorited(true);
         try {
             const endpoint = alreadyFavorited ? '/pius/unfavorite' : '/pius/favorite';
             console.log(endpoint);
             const response = await api.post(endpoint, data, {
                 headers: { Authorization: `Bearer ${token}`}, 
             })
-            alreadyFavorited ? setAlreadyFavorited(false) : setAlreadyFavorited(true);
         } catch {
             alert("Tente favoritar novamente mais tarde!");
         }
@@ -74,31 +71,19 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
         }
     }
 
-    // const getFavorites = async () => {
-    //     try {
-    //         const response = api.get('/users/?username=' + user.username, {
-    //             headers: { Authorization: `Bearer ${token}`}, 
-    //         }).then(function(response){
-    //             setUserFavorites(response.data[0].favorites);
-
-    //         });            
-    //     } catch {
-    //         alert("Tente novamente mais tarde!");
-    //     }
-    // }
-
     useEffect(() => {
         setLikes(content.likes.length);
         content.likes.map(like => {
             (like.user.id === user.id 
-                && setAlreadyLiked(true))
+                 && setAlreadyLiked(true))
         });
-        // userFavorites.map(piu => {
-        //     console.log(piu);
-        //     (piu.id === content.id
-        //         && (setAlreadyFavorited(true)))
-        // });
-    }, [])
+
+        user.favorites.map(piu => {
+            (piu.id === content.id
+                && (setAlreadyFavorited(true)))
+        });
+
+    }, [user.favorites])
 
     if(!piuVisibility) return(<></>);
 
@@ -137,8 +122,8 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
                             <img 
                                 onClick={() => favoritePiu()}
                                 src={alreadyFavorited
-                                        ? pinFilledIcon
-                                        : pinIcon
+                                        ? favFilledYellowIcon
+                                        : favIcon
                                     } 
                                 alt="Pin"/>
                         </S.Interaction>

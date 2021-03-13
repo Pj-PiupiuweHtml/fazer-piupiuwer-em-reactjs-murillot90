@@ -81,7 +81,7 @@ export const PiarInput = styled.div`
 
 export const PiarInputWarning = styled.div`
     position: absolute;
-    bottom: 0.8rem;
+    bottom: 1.6rem;
     left: 1.6rem;
     font-size: 1.4rem;
     color: #FF4218;
@@ -94,7 +94,7 @@ export const PiarInputFooter = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    bottom: 0.8rem;
+    bottom: 1.6rem;
     right: 1.6rem;
     
     span {
