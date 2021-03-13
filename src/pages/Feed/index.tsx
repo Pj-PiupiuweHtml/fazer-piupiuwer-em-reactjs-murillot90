@@ -21,6 +21,8 @@ function Feed() {
     
     const [piuArray, setPiuArray] = useState<Array<Piu>>([] as Array<Piu>);
     const [piuToPostLength, setPiuToPostLenght] = useState(0);
+    const [piuToPostText, setPiuToPostText] = useState('');
+    const [piuToPostError, setPiuToPostError] = useState('');
 
     const loadPius = async () => {
         try {
@@ -39,10 +41,29 @@ function Feed() {
         console.log(piuArray);
     }, [])
 
-    const handlePiar = (e: FormEvent) => {
+    const handlePiar = async (e: FormEvent) => {
         e.preventDefault();
-        console.log("oi")
+        
+        if (piuToPostText.trim().length == 0) {
+            setPiuToPostError("Empty piu :(");
+            return;
+        }
+        if (piuToPostText.trim().length > 140) {
+            setPiuToPostError("Too long :(");
+            return;
+        }
+        try {
+            const response = await api.post('/pius', {text: piuToPostText}, {
+                    headers: { Authorization: `Bearer ${token}`}, 
+                })
+            setPiuToPostError('');
+        } catch {
+            alert("Tente favoritar novamente mais tarde!");
+        }
+        setPiuToPostText('');
+        loadPius();
     }
+
 
     return (
         <>
@@ -56,14 +77,28 @@ function Feed() {
                         <S.PiarInput>
                             <form onSubmit={handlePiar}>
                                 <textarea 
-                                    onChange={(e) => {setPiuToPostLenght(e.target.textLength)}}
+                                    onChange={(e) => {
+                                        setPiuToPostLenght(e.target.textLength)
+                                        setPiuToPostText(e.target.value)
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            handlePiar(e);
+                                            
+                                        }
+                                    }}
+                                    value={piuToPostText}
                                     placeholder="Dê um piu!">
                                 </textarea>
                                 
-                                <S.PiarInputWarning>Empty piu</S.PiarInputWarning>
+                                <S.PiarInputWarning>{piuToPostError}</S.PiarInputWarning>
                                 <S.PiarInputFooter>
                                     <span 
-                                        className={piuToPostLength > 140 ? "warning" : ""}
+                                        className={
+                                            piuToPostLength > 140 
+                                                ? "warning" 
+                                                : ""
+                                        }
                                     >{piuToPostLength}/140</span>
                                     <button type="submit"><img src={piarIcon} alt="Profile"/>Piar</button>
                                 
