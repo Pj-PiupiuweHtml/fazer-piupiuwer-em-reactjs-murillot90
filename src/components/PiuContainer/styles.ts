@@ -10,25 +10,31 @@ export const Piu = styled.header`
     display: flex;
     padding: 16px;
 
-    > img {
-        height: 4.8rem;
-        width: 4.8rem;
-        object-fit: cover;
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
     @media (max-width: 820px) {
 
     }
 
 `;
 
-export const PiuContent = styled.div`
+export const ProfilePicture = styled.div`
+    height: 100%;
+    width: 4.8rem;
+    float: left;
+    img {
+        height: 4.8rem;
+        width: 4.8rem;
+        object-fit: cover;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+`
 
+export const PiuContent = styled.div`
+    flex-grow: 1;
     margin-left: 16px;
-    width: 100%;
     height: auto;
+    max-height: 100%;
+    overflow-y:auto;
 
     @media (max-width: 820px) {
 
@@ -100,6 +106,7 @@ export const PiuMessage = styled.p`
     margin-top: 0.8rem;
     margin-right: 1.6rem;
     font-size: 1.4rem;
+    word-wrap: break-word;
 `;
 
 export const EditPiuTextarea = styled.textarea`
@@ -118,7 +125,7 @@ export const EditPiuTextarea = styled.textarea`
 
 export const PiuFooter = styled.footer`
     display: flex;
-    justify-content: space-between;
+    flex-direction: row-reverse;
     align-items: center;
     margin-top: 0.8rem;
 `;
@@ -180,7 +187,7 @@ export const InteractionsArea = styled.div`
 export const Interaction = styled.div`
     display: flex;
     align-items: center;
-    margin: 0.8rem 0 0 2.4rem;
+    margin: 0.8rem 1.6rem 0 0;
     cursor: pointer;
     transition: 0.2s;
 
@@ -188,7 +195,7 @@ export const Interaction = styled.div`
         margin-left: 0;
     }
 
-    :hover {
+    img:hover {
         filter: brightness(160%);
     }
 
@@ -198,10 +205,15 @@ export const Interaction = styled.div`
         margin-bottom: 0.2rem;
     }
 
-    p {
+    a {
         font-size: 1.4rem;
-        width: 3.0rem;
+        width: 5rem;
         color: #023047;
     }
+
+    a:hover {
+        text-decoration:underline;
+    }
+
 `;
 

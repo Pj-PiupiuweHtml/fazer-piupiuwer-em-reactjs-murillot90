@@ -21,8 +21,6 @@ export const ButtonComponent = styled.button<ButtonComponentProps>`
         css`
             background: ${COLORS.secondaryDark};
             color: ${COLORS.white};
-
-
         `
     };
 

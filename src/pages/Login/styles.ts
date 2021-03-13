@@ -100,6 +100,7 @@ export const LoginHeader = styled.div`
 
     img {
         height: 4.8rem;
+        width: 4.8rem;
     }
 `;
 

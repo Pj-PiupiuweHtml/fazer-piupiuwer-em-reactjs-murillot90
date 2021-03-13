@@ -33,10 +33,12 @@ export const PiarInputArea = styled.div`
     box-shadow: 0px 0.2rem 0.2rem rgba(0, 0, 0, 0.25);
     margin-bottom: 1.6rem;
 
-    img {
+    > img {
         height: 6.4rem;
+        width: 6.4rem;
         border-radius: 50%;
         cursor: pointer;
+        object-fit: cover;
     }
 
     @media (max-width: 820px) {
@@ -100,6 +102,10 @@ export const PiarInputFooter = styled.div`
         color: #667581;
         margin-right: 1.2rem;
         padding-top: 0.2rem;
+    }
+
+    span.warning {
+        color: ${COLORS.auxiliaryRed};
     }
 
     button {
