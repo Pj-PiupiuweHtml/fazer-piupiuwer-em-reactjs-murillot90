@@ -10,6 +10,10 @@ export const Piu = styled.header`
     display: flex;
     padding: 16px;
 
+    &.fixed{
+        order: -1;
+    }
+
     @media (max-width: 820px) {
 
     }

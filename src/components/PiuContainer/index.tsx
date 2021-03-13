@@ -24,53 +24,94 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
     
     const [likes, setLikes] = useState<number>(0);
     const [alreadyLiked, setAlreadyLiked] = useState<boolean>(false);
-
+    // const [userFavorites, setUserFavorites] = useState<Array<PiuLike>>([] as Array<PiuLike>);
     const [alreadyFavorited, setAlreadyFavorited] = useState<boolean>(false);
+    const [piuVisibility, setPiuVisibility] = useState<boolean>(true);
     
 
     var data = {
         'piu_id' : content.id
     }
 
-    const like = async () => {
+    const likePiu = async () => {
         try {
             const response = await api.post('/pius/like', data, {
                     headers: { Authorization: `Bearer ${token}`}, 
             })
             response.data.operation == "like" ? setLikes(likes + 1) : setLikes(likes - 1)
-            alreadyLiked ? setAlreadyLiked(false) : setAlreadyLiked(true)
-            console.log(alreadyLiked);
+            alreadyLiked ? setAlreadyLiked(false) : setAlreadyLiked(true);
         } catch {
-            alert("Tente dar like novamente mais tarde!")
+            alert("Tente dar like novamente mais tarde!");
         }
     }
 
-    const favorite = async () => {
+    const favoritePiu = async () => {
         try {
             const endpoint = alreadyFavorited ? '/pius/unfavorite' : '/pius/favorite';
+            console.log(endpoint);
             const response = await api.post(endpoint, data, {
                 headers: { Authorization: `Bearer ${token}`}, 
             })
-            alreadyFavorited ? setAlreadyFavorited(false) : setAlreadyFavorited(true)
+            alreadyFavorited ? setAlreadyFavorited(false) : setAlreadyFavorited(true);
         } catch {
-
+            alert("Tente favoritar novamente mais tarde!");
         }
-
     }
 
-    useEffect(() => {
-        setLikes(content.likes.length)
-        content.likes.map( like => {
-            (like.user.id === user.id &&
-                setAlreadyLiked(true))
-        })
+    const deletePiu = async () => {
+        try {
+            const response = await api.delete('/pius', {
+                headers: { 
+                    Authorization: `Bearer ${token}`
+                },  
+                data: {
+                    "piu_id": content.id
+                }
+            });
+            setPiuVisibility(false);
+        } catch {
+            alert("Tente novamente mais tarde!");
+        }
+    }
 
+    // const getFavorites = async () => {
+    //     try {
+    //         const response = api.get('/users/?username=' + user.username, {
+    //             headers: { Authorization: `Bearer ${token}`}, 
+    //         }).then(function(response){
+    //             setUserFavorites(response.data[0].favorites);
+
+    //         });            
+    //     } catch {
+    //         alert("Tente novamente mais tarde!");
+    //     }
+    // }
+
+    useEffect(() => {
+        setLikes(content.likes.length);
+        content.likes.map(like => {
+            (like.user.id === user.id 
+                && setAlreadyLiked(true))
+        });
+        // userFavorites.map(piu => {
+        //     console.log(piu);
+        //     (piu.id === content.id
+        //         && (setAlreadyFavorited(true)))
+        // });
     }, [])
 
+    if(!piuVisibility) return(<></>);
+
     return (
-        <S.Piu>
+        <S.Piu 
+            className={
+                alreadyFavorited
+                    ? "fixed"
+                    : ""
+            }
+        >
             <S.ProfilePicture>
-                <img src={content.user.photo == "" 
+                <img src={content.user.photo === "" 
                             ?  unknownAvatar 
                             : content.user.photo} alt="Avatar"/>    
             </S.ProfilePicture>
@@ -82,7 +123,10 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
                     </S.UserDetails>
                         <S.EditOptions>
                             {user.id === content.user.id && (
-                                <img src={deleteIcon} alt="Delete"/>
+                                <img 
+                                    onClick={() => deletePiu()}
+                                    src={deleteIcon} 
+                                    alt="Delete"/>
                                 )}
                         </S.EditOptions>
                 </S.PiuHeader>
@@ -91,7 +135,7 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
                     <S.InteractionsArea>
                         <S.Interaction>
                             <img 
-                                onClick={() => favorite()}
+                                onClick={() => favoritePiu()}
                                 src={alreadyFavorited
                                         ? pinFilledIcon
                                         : pinIcon
@@ -100,7 +144,7 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
                         </S.Interaction>
                         <S.Interaction>
                             <img 
-                                onClick={() => like()} 
+                                onClick={() => likePiu()} 
                                 src={alreadyLiked
                                         ? likeFilledIcon
                                         : likeIcon
