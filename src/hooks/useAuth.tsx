@@ -46,7 +46,6 @@ export const AuthProvider: React.FC = ({ children }) => {
     useEffect(() => {
         const getUser = async () => {
             const response = await api.get('users?username=' + userData.user.username)
-            // console.log(response.data);
             setUserData({user: response.data[0], token: userData.token});
         }
         userData?.user?.username && getUser()

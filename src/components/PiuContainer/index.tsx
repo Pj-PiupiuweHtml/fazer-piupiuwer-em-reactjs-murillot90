@@ -1,4 +1,6 @@
 import React,  { useState, useEffect } from 'react';
+import moment from 'moment'
+
 import * as S from './styles';
 import { Piu, PiuLike, User } from "../../services/entities"
 import { useAuth } from "../../hooks/useAuth"
@@ -25,7 +27,6 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
     const [alreadyFavorited, setAlreadyFavorited] = useState<boolean>(false);
     const [piuVisibility, setPiuVisibility] = useState<boolean>(true);
     
-
     var data = {
         'piu_id' : content.id
     }
@@ -104,7 +105,7 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
                 <S.PiuHeader>
                     <S.UserDetails>
                         <h3>{content.user.first_name + " " + content.user.last_name}</h3>
-                        <p>{"@" + content.user.username} • 1h</p>
+                        <p>{"@" + content.user.username} · {moment(content.created_at).fromNow()}</p>
                     </S.UserDetails>
                         <S.EditOptions>
                             {user.id === content.user.id && (

@@ -66,7 +66,6 @@ function Feed() {
         loadPius();
     }
 
-
     return (
         <>
             <PageHeader/>
