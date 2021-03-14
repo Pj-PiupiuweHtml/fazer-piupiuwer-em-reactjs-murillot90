@@ -1,5 +1,5 @@
 import React,  { useState, useEffect } from 'react';
-import moment from 'moment'
+import moment from 'moment';
 
 import * as S from './styles';
 import { Piu, PiuLike, User } from "../../services/entities"
@@ -8,7 +8,6 @@ import api from '../../services/api';
 
 import likeIcon from '../../assets/images/icons/heart-outline.svg';
 import likeFilledIcon from '../../assets/images/icons/heart-solid-red.svg';
-
 import favIcon from '../../assets/images/icons/star-outline.svg';
 import favFilledYellowIcon from '../../assets/images/icons/star-solid-yellow.svg';
 import deleteIcon from '../../assets/images/icons/trash-alt-regular.svg';
@@ -23,9 +22,9 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
     
     const [likes, setLikes] = useState<number>(0);
     const [alreadyLiked, setAlreadyLiked] = useState<boolean>(false);
-    // const [userFavorites, setUserFavorites] = useState<Array<PiuLike>>([] as Array<PiuLike>);
     const [alreadyFavorited, setAlreadyFavorited] = useState<boolean>(false);
-    const [piuVisibility, setPiuVisibility] = useState<boolean>(true);
+    const [piuInDeleteAnimation, setPiuInDeleteAnimation] = useState<boolean>(false);
+    const [piuIsVisible, setPiuIsVisible] = useState<boolean>(true);
     
     var data = {
         'piu_id' : content.id
@@ -66,7 +65,10 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
                     "piu_id": content.id
                 }
             });
-            setPiuVisibility(false);
+            setPiuInDeleteAnimation(true);
+            setTimeout(() => {
+                setPiuIsVisible(false);
+            }, 500);
         } catch {
             alert("Tente novamente mais tarde!");
         }
@@ -86,14 +88,18 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
 
     }, [user.favorites])
 
-    if(!piuVisibility) return(<></>);
+    if(!piuIsVisible) return(<></>);
 
     return (
         <S.Piu 
             className={
-                alreadyFavorited
-                    ? "fixed"
-                    : ""
+                (alreadyFavorited
+                    ? " fixed"
+                    : "")
+                + 
+                (piuInDeleteAnimation
+                    ? " fadeout"
+                    : "")
             }
         >
             <S.ProfilePicture>

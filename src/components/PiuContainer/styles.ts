@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { COLORS } from '../../assets/styles/themes';
 
-export const Piu = styled.header`
+export const Piu = styled.div`
 
     background: #FFFFFC;
     margin: 8px;
@@ -12,6 +12,11 @@ export const Piu = styled.header`
 
     &.fixed{
         order: -1;
+    }
+
+    &.fadeout {
+        opacity: 0;
+        transition: 0.5s;
     }
 
     @media (max-width: 820px) {
