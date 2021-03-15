@@ -10,6 +10,8 @@ export const GlobalStyle = createGlobalStyle`
 
     html {
         font-size: 62.5%;
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
     
     body {
@@ -20,7 +22,6 @@ export const GlobalStyle = createGlobalStyle`
         background: ${COLORS.primaryBackground};
         color: ${COLORS.blackRegular};
 
-        overflow-x: hidden;
         width: 100vw;
     }
 

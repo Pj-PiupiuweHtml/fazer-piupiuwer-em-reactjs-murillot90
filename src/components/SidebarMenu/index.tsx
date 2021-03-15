@@ -6,6 +6,7 @@ import homeIcon from '../../assets/images/icons/home-solid.svg';
 import profileIcon from '../../assets/images/icons/user-solid.svg';
 import piarIcon from '../../assets/images/icons/feather-solid-white.svg';
 import favFilledIcon from '../../assets/images/icons/star-solid.svg';
+import { Link } from 'react-router-dom';
 
 function SidebarMenu() {
     const { user } = useAuth();
@@ -20,22 +21,22 @@ function SidebarMenu() {
                 </S.UserSummaryTexts>
             </S.UserSummary>
             <S.NavigationMenu>
-                <a href="#">
+                <Link to="/feed">
                     <img src={homeIcon} alt="Home"/>
                     Home
-                </a>
-                <a>
+                </Link>
+                <Link to="/favorites">
                     <img src={favFilledIcon} alt="Notifications"/>
                     Favorite Pius
-                </a>
-                <a>
+                </Link>
+                <Link to="#" onClick={() => alert("In construction")}>
                     <img src={profileIcon} alt="Profile"/>
                     Profile
-                </a>
-                <a id="piar-button">
+                </Link>
+                <Link to="/feed" id="piar-button">
                     <img src={piarIcon} alt="Dê um piu"/>
                     Dê um piu
-                </a>
+                </Link>
             </S.NavigationMenu>
         </S.SidebarWrapper>
     );

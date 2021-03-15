@@ -10,9 +10,9 @@ export const Piu = styled.div`
     display: flex;
     padding: 16px;
 
-    &.fixed{
+    /* &.fixed{
         order: -1;
-    }
+    } */
 
     &.fadeout {
         opacity: 0;

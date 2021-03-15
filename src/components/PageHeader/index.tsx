@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import * as S from './styles';
 import { useAuth } from "../../hooks/useAuth"
 import { SearchTextContext } from '../../pages/Feed'
+import { SearchTextContextFav } from '../../pages/Favorites';
 
 import kiwiImg from '../../assets/images/kiwi-bird-solid.svg';
 import signOutImg from '../../assets/images/icons/sign-out-alt-solid.svg';
@@ -9,6 +10,7 @@ import signOutImg from '../../assets/images/icons/sign-out-alt-solid.svg';
 const PageHeader: React.FC = () => {
     const { logout } = useAuth();
     const { setSearchText } = useContext(SearchTextContext);
+    const { setSearchTextFav } = useContext(SearchTextContextFav);
 
     return (
         <S.Header>
@@ -21,7 +23,8 @@ const PageHeader: React.FC = () => {
                     <input 
                         type="text" 
                         placeholder="Search here!"
-                        onChange={(e) => setSearchText(e.target.value)}
+                        onChange={(e) => {setSearchText(e.target.value);
+                                          setSearchTextFav(e.target.value)}}
                     />
                     <button onClick={ logout }>
                         <img src={signOutImg} alt="Sign Out"/>
