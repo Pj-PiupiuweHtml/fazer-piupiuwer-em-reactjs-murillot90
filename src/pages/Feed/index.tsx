@@ -124,7 +124,7 @@ function Feed() {
                                     if(username.indexOf(filter) == -1 &&
                                        text.indexOf(filter) == -1 &&
                                        name.indexOf(filter) == -1)
-                                    return(<></>);
+                                    return(<div key={piu.id}></div>);
                                 }
 
                                 numberOfVisiblePius += 1;

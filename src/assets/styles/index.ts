@@ -12,6 +12,8 @@ export const GlobalStyle = createGlobalStyle`
         overflow-y:scroll;
         overflow-x: hidden;
         font-size: 62.5%;
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
     
     body {
