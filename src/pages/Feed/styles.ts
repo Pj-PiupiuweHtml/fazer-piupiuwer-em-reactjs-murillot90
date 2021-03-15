@@ -140,6 +140,4 @@ export const PiusSection = styled.div`
 export const UnsuccessfulSearchTag = styled.h3`
     text-align: center;
     margin: 3.2rem;
-
-    display: none;
 `;

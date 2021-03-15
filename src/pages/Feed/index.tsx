@@ -1,7 +1,5 @@
 import React, { useState, useEffect, FormEvent, useRef, createContext } from 'react';
-import { Link } from 'react-router-dom';
 import { useAuth } from "../../hooks/useAuth"
-import axios from 'axios';
 import api from '../../services/api';
 
 import PageHeader from '../../components/PageHeader';
@@ -9,12 +7,11 @@ import SidebarMenu from '../../components/SidebarMenu';
 import SidebarMenuCollapsed from '../../components/SidebarMenuCollapsed';
 import PiuContainer from '../../components/PiuContainer';
 
-import { User, Piu, PiuLike } from '../../services/entities';
+import { Piu } from '../../services/entities';
 
 import * as S from './styles';
 
 import piarIcon from '../../assets/images/icons/feather-solid-white.svg';
-import userEvent from '@testing-library/user-event';
 
 export const SearchTextContext = createContext({
     setSearchText: (text: string) => {}
@@ -28,8 +25,10 @@ function Feed() {
     const [piuToPostText, setPiuToPostText] = useState('');
     const [piuToPostError, setPiuToPostError] = useState('');
     const [searchText, setSearchText] = useState('');
+    let numberOfVisiblePius = 0;
     
     const piuInputRef = useRef(null as any);
+
 
     const loadPius = async () => {
         try {
@@ -128,13 +127,16 @@ function Feed() {
                                     return(<></>);
                                 }
 
+                                numberOfVisiblePius += 1;
                                 return (
                                     <PiuContainer  key={piu.id} content={piu}/>
                                 )
                             })}
                         </S.PiusSection>
                         <S.UnsuccessfulSearchTag>
-                            Não foi encontrado nenhum piu ou usuário :(
+                            {numberOfVisiblePius == 0
+                                ? "Não foi encontrado nenhum piu ou usuário :("
+                                : ""}
                         </S.UnsuccessfulSearchTag>
                     </S.FeedContent>
                 </S.ContentWrapper>

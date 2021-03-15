@@ -9,6 +9,8 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     html {
+        overflow-y:scroll;
+        overflow-x: hidden;
         font-size: 62.5%;
     }
     
@@ -19,8 +21,6 @@ export const GlobalStyle = createGlobalStyle`
 
         background: ${COLORS.primaryBackground};
         color: ${COLORS.blackRegular};
-
-        overflow-x: hidden;
         width: 100vw;
     }
 
@@ -93,7 +93,7 @@ export const StylizedScrollbars = createGlobalStyle`
         height: 0px;
     }
     ::-webkit-scrollbar-thumb {
-        background: ${COLORS.primaryDarker};
+        background: ${COLORS.secondaryDark};
         border: 0px none ${COLORS.white};
         border-radius: 100px;
     }
