@@ -58,9 +58,6 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
     const deletePiu = async () => {
         try {
             const response = await api.delete('/pius', {
-                headers: { 
-                    Authorization: `Bearer ${token}`
-                },  
                 data: {
                     "piu_id": content.id
                 }

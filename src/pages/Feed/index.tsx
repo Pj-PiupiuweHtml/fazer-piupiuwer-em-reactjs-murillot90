@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent, useRef } from 'react';
+import React, { useState, useEffect, FormEvent, useRef, createContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from "../../hooks/useAuth"
 import axios from 'axios';
@@ -16,6 +16,10 @@ import * as S from './styles';
 import piarIcon from '../../assets/images/icons/feather-solid-white.svg';
 import userEvent from '@testing-library/user-event';
 
+export const SearchTextContext = createContext({
+    setSearchText: (text: string) => {}
+});
+
 function Feed() {
     const { user, token } = useAuth();
     
@@ -23,7 +27,8 @@ function Feed() {
     const [piuToPostLength, setPiuToPostLenght] = useState(0);
     const [piuToPostText, setPiuToPostText] = useState('');
     const [piuToPostError, setPiuToPostError] = useState('');
-
+    const [searchText, setSearchText] = useState('');
+    
     const piuInputRef = useRef(null as any);
 
     const loadPius = async () => {
@@ -40,7 +45,6 @@ function Feed() {
 
     useEffect(() => {
         loadPius();
-        console.log(piuArray);
     }, [])
 
     const handlePiar = async (e: FormEvent) => {
@@ -55,9 +59,7 @@ function Feed() {
             return;
         }
         try {
-            const response = await api.post('/pius', {text: piuToPostText}, {
-                    headers: { Authorization: `Bearer ${token}`}, 
-                })
+            const response = await api.post('/pius', {text: piuToPostText.trim()})
             setPiuToPostError('');
         } catch {
             alert("Tente favoritar novamente mais tarde!");
@@ -68,61 +70,75 @@ function Feed() {
 
     return (
         <>
-            <PageHeader/>
-            <S.ContentWrapper>
-                <SidebarMenu/>
-                <SidebarMenuCollapsed/>
-                <S.FeedContent>
-                    <S.PiarInputArea>
-                        <img src={user.photo} alt="Avatar"/>
-                        <S.PiarInput>
-                            <form onSubmit={handlePiar}>
-                                <textarea 
-                                    onChange={(e) => {
-                                        setPiuToPostLenght(e.target.textLength)
-                                        setPiuToPostText(e.target.value)
-                                    }}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter') {
-                                            handlePiar(e);
-                                            
-                                        }
-                                    }}
-                                    value={piuToPostText}
-                                    ref={piuInputRef}
-                                    placeholder="Dê um piu!">
-                                </textarea>
-                                
-                                <S.PiarInputWarning>{piuToPostError}</S.PiarInputWarning>
-                                <S.PiarInputFooter>
-                                    <span 
-                                        className={
-                                            piuToPostLength > 140 
+            <SearchTextContext.Provider value={{setSearchText}}>
+                <PageHeader/>
+                <S.ContentWrapper>
+                    <SidebarMenu/>
+                    <SidebarMenuCollapsed/>
+                    <S.FeedContent>
+                        <S.PiarInputArea>
+                            <img src={user.photo} alt="Avatar"/>
+                            <S.PiarInput>
+                                <form onSubmit={handlePiar}>
+                                    <textarea 
+                                        onChange={(e) => {
+                                            setPiuToPostLenght(e.target.textLength)
+                                            setPiuToPostText(e.target.value)
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                handlePiar(e);
+                                                
+                                            }
+                                        }}
+                                        value={piuToPostText}
+                                        ref={piuInputRef}
+                                        placeholder="Dê um piu!">
+                                    </textarea>
+                                    
+                                    <S.PiarInputWarning>{piuToPostError}</S.PiarInputWarning>
+                                    <S.PiarInputFooter>
+                                        <span
+                                            className={
+                                                piuToPostLength > 140 
                                                 ? "warning" 
                                                 : ""
-                                        }
-                                    >{piuToPostLength}/140</span>
-                                    <button type="submit" onClick={() => piuInputRef.current.focus()}>
-                                        <img src={piarIcon} alt="Profile"/>
-                                        Piar    
-                                    </button>
-                                
-                                </S.PiarInputFooter>
-                            </form>
-                        </S.PiarInput>
-                    </S.PiarInputArea>
-                    <S.PiusSection>
-                        {piuArray.map(piu => {
-                            return (
-                                <PiuContainer  key={piu.id} content={piu}/>
-                            )
-                        })}
-                    </S.PiusSection>
-                    <S.UnsuccessfulSearchTag>
-                        Não foi encontrado nenhum piu ou usuário :(
-                    </S.UnsuccessfulSearchTag>
-                </S.FeedContent>
-            </S.ContentWrapper>
+                                            }
+                                            >{piuToPostLength}/140</span>
+                                        <button type="submit" onClick={() => piuInputRef.current.focus()}>
+                                            <img src={piarIcon} alt="Profile"/>
+                                            Piar    
+                                        </button>
+                                    
+                                    </S.PiarInputFooter>
+                                </form>
+                            </S.PiarInput>
+                        </S.PiarInputArea>
+                        <S.PiusSection>
+                            {piuArray.map(piu => {
+                                const filter = searchText.toUpperCase().trim();
+                                const username = piu.user.username.toUpperCase();
+                                const text = piu.text.toUpperCase();
+                                const name = (piu.user.first_name + " " + piu.user.last_name).toUpperCase()
+
+                                if(searchText != ""){
+                                    if(username.indexOf(filter) == -1 &&
+                                       text.indexOf(filter) == -1 &&
+                                       name.indexOf(filter) == -1)
+                                    return(<></>);
+                                }
+
+                                return (
+                                    <PiuContainer  key={piu.id} content={piu}/>
+                                )
+                            })}
+                        </S.PiusSection>
+                        <S.UnsuccessfulSearchTag>
+                            Não foi encontrado nenhum piu ou usuário :(
+                        </S.UnsuccessfulSearchTag>
+                    </S.FeedContent>
+                </S.ContentWrapper>
+            </SearchTextContext.Provider>
         </>
     );
 }
