@@ -23,6 +23,20 @@ const deadBirdBounce = keyframes`
     }
 `;
 
+const birdAboutToDieBecauseEverythingThatLivesDiesAnimation = keyframes`
+    0% {
+        transform: rotate(0deg);
+    }
+
+    5% {
+        transform: rotate(360deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+`;
+
 export const Background = styled.div`
     display: flex;
     align-items: center;
@@ -65,6 +79,8 @@ export const Logo = styled.div`
     img {
         margin-bottom: 2.4rem;
         height: 9.6rem;
+        animation: ${birdAboutToDieBecauseEverythingThatLivesDiesAnimation} 
+                    10s linear infinite;
     }
 
     h3 { 
