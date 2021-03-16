@@ -1,5 +1,27 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { COLORS } from '../../assets/styles/themes';
+
+const deadBirdBounce = keyframes`
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(12deg);
+    }
+
+    50% {
+        transform: rotate(0deg);
+    }
+
+    75% {
+        transform: rotate(-12deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+`;
 
 export const Background = styled.div`
     display: flex;
@@ -27,6 +49,7 @@ export const Container = styled.div`
         flex-direction: column;
     }
 `;
+
 
 export const Logo = styled.div`
     display: flex;
@@ -101,6 +124,7 @@ export const LoginHeader = styled.div`
     img {
         height: 4.8rem;
         width: 4.8rem;
+        animation: ${deadBirdBounce} 2s linear infinite;
     }
 `;
 
@@ -108,7 +132,6 @@ export const LoginForm = styled.form`
     display:flex;
     flex-direction: column;
     align-items: center;
-
 
     a {
         color: ${COLORS.blackClickable}

@@ -17,11 +17,19 @@ export const FeedContent = styled.main`
     height: fit-content;
     display: flex;
     flex-direction: column;
+    /* align-items: center; */
 
     @media (max-width: 820px) {
         grid-column-start: 3;
         grid-column-end: 13;
     }
+`;
+
+export const LoaderWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 1.6rem 0;
 `;
 
 export const PiarInputArea = styled.div`

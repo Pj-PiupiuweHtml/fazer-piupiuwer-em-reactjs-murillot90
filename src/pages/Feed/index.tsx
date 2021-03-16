@@ -1,4 +1,5 @@
 import React, { useState, useEffect, FormEvent, useRef, createContext } from 'react';
+import Loader from "react-loader-spinner";
 import { useAuth } from "../../hooks/useAuth"
 import api from '../../services/api';
 
@@ -12,6 +13,7 @@ import { Piu } from '../../services/entities';
 import * as S from './styles';
 
 import piarIcon from '../../assets/images/icons/feather-solid-white.svg';
+import { COLORS } from '../../assets/styles/themes';
 
 export const SearchTextContext = createContext({
     setSearchText: (text: string) => {}
@@ -25,6 +27,7 @@ function Feed() {
     const [piuToPostText, setPiuToPostText] = useState('');
     const [piuToPostError, setPiuToPostError] = useState('');
     const [searchText, setSearchText] = useState('');
+    const [loading, setLoading] = useState(true);
     let numberOfVisiblePius = 0;
     
     const piuInputRef = useRef(null as any);
@@ -40,9 +43,11 @@ function Feed() {
         } catch {
             alert("Tente carregar pius novamente mais tarde!")
         }
+        setLoading(false);
     }
 
     useEffect(() => {
+        setLoading(true);
         loadPius();
     }, [])
 
@@ -113,6 +118,15 @@ function Feed() {
                                 </form>
                             </S.PiarInput>
                         </S.PiarInputArea>
+                        { loading &&
+                            (<S.LoaderWrapper>
+                                <Loader
+                                    type="Oval"
+                                    color={COLORS.secondaryDark}
+                                    height={48}
+                                    width={48}
+                                />
+                            </S.LoaderWrapper>)}
                         <S.PiusSection>
                             {piuArray.map(piu => {
                                 const filter = searchText.toUpperCase().trim();
@@ -134,7 +148,7 @@ function Feed() {
                             })}
                         </S.PiusSection>
                         <S.UnsuccessfulSearchTag>
-                            {numberOfVisiblePius == 0
+                            {numberOfVisiblePius == 0 && !loading
                                 ? "Não foi encontrado nenhum piu ou usuário :("
                                 : ""}
                         </S.UnsuccessfulSearchTag>

@@ -24,6 +24,13 @@ export const FeedContent = styled.main`
     }
 `;
 
+export const LoaderWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 1.6rem 0;
+`;
+
 export const PiarInputArea = styled.div`
     
     background: #80C8D5;

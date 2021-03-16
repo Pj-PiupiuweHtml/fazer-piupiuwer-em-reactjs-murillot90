@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from "../../hooks/useAuth"
 import axios from 'axios';
 import api from '../../services/api';
+import Loader from "react-loader-spinner";
 
 import PageHeader from '../../components/PageHeader';
 import SidebarMenu from '../../components/SidebarMenu';
@@ -15,6 +16,7 @@ import * as S from './styles';
 
 import piarIcon from '../../assets/images/icons/feather-solid-white.svg';
 import userEvent from '@testing-library/user-event';
+import { COLORS } from '../../assets/styles/themes';
 
 export const SearchTextContextFav = createContext({
     setSearchTextFav: (text: string) => {}
@@ -23,6 +25,7 @@ export const SearchTextContextFav = createContext({
 function Feed() {
     const { user } = useAuth();
     
+    const [loading, setLoading] = useState(true);
     const [piuArray, setPiuArray] = useState<Array<Piu>>([] as Array<Piu>);
     const [searchTextFav, setSearchTextFav] = useState('');
     let numberOfVisiblePius = 0;
@@ -40,9 +43,11 @@ function Feed() {
         } catch {
             alert("Tente carregar pius novamente mais tarde!")
         }
+        setLoading(false);
     }
 
     useEffect(() => {
+        setLoading(true);
         favArray = [];
         user.favorites.map(favorite => {
             favArray = [...favArray, favorite.id];
@@ -62,6 +67,15 @@ function Feed() {
                     <SidebarMenu/>
                     <SidebarMenuCollapsed/>
                     <S.FeedContent>
+                    { loading &&
+                            (<S.LoaderWrapper>
+                                <Loader
+                                    type="Oval"
+                                    color={COLORS.secondaryDark}
+                                    height={48}
+                                    width={48}
+                                />
+                            </S.LoaderWrapper>)}
                         <S.PiusSection>
                             {piuArray.map(piu => {
                                 const filter = searchTextFav.toUpperCase().trim();
@@ -83,8 +97,8 @@ function Feed() {
                             })}
                         </S.PiusSection>
                         <S.UnsuccessfulSearchTag>
-                            {numberOfVisiblePius == 0
-                                ? "Não foi encontrado nenhum piu ou usuário :("
+                            {numberOfVisiblePius == 0 && !loading
+                                ? "Ou vc n tem favorito, ou tá rolando um bug louco no código, mano, recarrega a página aí pra ver se vai (UX 10/10)"
                                 : ""}
                         </S.UnsuccessfulSearchTag>
                     </S.FeedContent>
