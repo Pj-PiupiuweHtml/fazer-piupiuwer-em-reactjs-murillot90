@@ -32,13 +32,6 @@
 
 ---
 
-## Deploy
-
-O deploy da aplicação foi feito usando a plataforma Vercel! E o resultado pode ser acessado [aqui](https://piupiuwer.vercel.app/)
-Infelizmente repositórios do GitHub Classes não se ennquadram na categoria de Hobby da Vercel, então fiz o deploy usando um repositório particular privado.
-
----
-
 ## Funcionalidades
 
 - [x] Tela de Login
@@ -55,6 +48,15 @@ Infelizmente repositórios do GitHub Classes não se ennquadram na categoria de 
         - Curtir o piu
         - Deletar pius próprios
    - [x] Deve haver uma caixa para enviar novos pius válidos e registrá-los no banco de dados
+
+---
+
+
+## Deploy
+
+O deploy da aplicação foi feito usando a plataforma Vercel! E o resultado pode ser acessado [aqui](https://piupiuwer.vercel.app/).
+
+Infelizmente repositórios do GitHub Classes não se enquadram na categoria de Hobby da Vercel, então fiz o deploy usando um repositório particular privado.
 
 ---
 
