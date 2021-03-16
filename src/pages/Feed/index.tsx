@@ -68,6 +68,7 @@ function Feed() {
         } catch {
             alert("Tente favoritar novamente mais tarde!");
         }
+        setPiuToPostLenght(0);
         setPiuToPostText('');
         loadPius();
     }
