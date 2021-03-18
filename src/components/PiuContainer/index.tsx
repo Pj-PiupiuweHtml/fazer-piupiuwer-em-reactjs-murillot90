@@ -18,7 +18,7 @@ interface PiuContainerProps {
 }
 
 const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
-    const { user, token } = useAuth();
+    const { user, token, setGetUserAgain } = useAuth();
     
     const [likes, setLikes] = useState<number>(0);
     const [alreadyLiked, setAlreadyLiked] = useState<boolean>(false);
@@ -41,7 +41,7 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
             alert("Tente dar like novamente mais tarde!");
         }
     }
-
+    
     const favoritePiu = async () => {
         alreadyFavorited ? setAlreadyFavorited(false) : setAlreadyFavorited(true);
         try {
@@ -50,6 +50,7 @@ const PiuContainer: React.FC<PiuContainerProps> = ( { content }) => {
             const response = await api.post(endpoint, data, {
                 headers: { Authorization: `Bearer ${token}`}, 
             })
+            setGetUserAgain(c => !c); //'c' é o valor atual do estado. Mesmo que fazer setGetUserAgain(!getUserAgain)
         } catch {
             alert("Tente favoritar novamente mais tarde!");
         }

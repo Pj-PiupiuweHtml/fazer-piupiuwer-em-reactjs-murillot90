@@ -18,6 +18,7 @@ interface AuthContextData {
     error: boolean;
     login(loginCred: LoginCredentials): void;
     logout(): void;
+    setGetUserAgain: React.Dispatch<React.SetStateAction<boolean>>; //tipo da função setState - só passar o mouse por cima de alguma delas e o vscode te mostra
 }
 
 interface AuthState {
@@ -30,6 +31,8 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export const AuthProvider: React.FC = ({ children }) => {
 
     const [error, setError] = useState(false);
+    const [getUserAgain, setGetUserAgain] = useState(true);
+    
 
     const [userData, setUserData] = useState<AuthState>(() => {
         const token = localStorage.getItem('@Piupiuwer:token');
@@ -44,12 +47,13 @@ export const AuthProvider: React.FC = ({ children }) => {
     });
 
     useEffect(() => {
+        console.log('fui chamado')
         const getUser = async () => {
             const response = await api.get('users?username=' + userData.user.username)
             setUserData({user: response.data[0], token: userData.token});
         }
         userData?.user?.username && getUser()
-    }, [userData?.user?.username])
+    }, [userData?.user?.username, getUserAgain]) //vai chamar a função sempre que o getUserAgain mudar
 
 	const login = async ({ email, password }: LoginCredentials) => {
         try {
@@ -81,7 +85,8 @@ export const AuthProvider: React.FC = ({ children }) => {
                 ...(userData || {}),
                 error: error,
                 login,
-                logout
+                logout,
+                setGetUserAgain
             }}>
             {children}
         </AuthContext.Provider>
