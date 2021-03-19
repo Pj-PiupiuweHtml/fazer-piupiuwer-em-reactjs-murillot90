@@ -1,7 +1,6 @@
-import React, { useState, useEffect, FormEvent, useRef, createContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, createContext } from 'react';
 import { useAuth } from "../../hooks/useAuth"
-import axios from 'axios';
+import { AxiosResponse } from 'axios';
 import api from '../../services/api';
 import Loader from "react-loader-spinner";
 
@@ -10,54 +9,45 @@ import SidebarMenu from '../../components/SidebarMenu';
 import SidebarMenuCollapsed from '../../components/SidebarMenuCollapsed';
 import PiuContainer from '../../components/PiuContainer';
 
-import { User, Piu, PiuLike } from '../../services/entities';
+import { Piu } from '../../services/entities';
 
 import * as S from './styles';
 
-import piarIcon from '../../assets/images/icons/feather-solid-white.svg';
-import userEvent from '@testing-library/user-event';
 import { COLORS } from '../../assets/styles/themes';
 
-export const SearchTextContextFav = createContext({
-    setSearchTextFav: (text: string) => {}
-});
+interface SearchTextProps { 
+    setSearchTextFav: React.Dispatch<React.SetStateAction<string>> 
+}
 
-function Feed() {
+export const SearchTextContextFav = createContext<SearchTextProps>({} as SearchTextProps);
+
+let favArray: string[] = []; // tirei do componente para melhorar performance
+
+const Favorites: React.FC= () => {
     const { user } = useAuth();
     
     const [loading, setLoading] = useState(true);
-    const [piuArray, setPiuArray] = useState<Array<Piu>>([] as Array<Piu>);
-    const [searchTextFav, setSearchTextFav] = useState('');
-    let numberOfVisiblePius = 0;
-    
-    let favArray: Array<String> = [];
+    const [piuArray, setPiuArray] = useState<Piu[]>([]);
+    const [searchTextFav, setSearchTextFav] = useState('');    
 
-    const loadFavorites = async () => {
-        try {
-            const response = await api.get('/pius/')
-            response.data.map((piu: Piu) => { 
-                if(favArray.indexOf(piu.id) != -1) {
-                    setPiuArray(piuArray => [...piuArray, piu]);
-                }
-            });
-        } catch {
-            alert("Tente carregar pius novamente mais tarde!")
-        }
-        setLoading(false);
-    }
 
     useEffect(() => {
         setLoading(true);
-        favArray = [];
-        user.favorites.map(favorite => {
-            favArray = [...favArray, favorite.id];
-        });
+        favArray = user.favorites.map(favorite => favorite.id);
+
+        const loadFavorites = async () => {
+            try {
+                const response: AxiosResponse<Piu[]> = await api.get('/pius/')
+                setPiuArray(response.data.filter(piu => favArray.includes(piu.id)))
+            } catch {
+                alert("Tente carregar pius novamente mais tarde!")
+            }
+            setLoading(false);
+        }
+
         loadFavorites();
     }, [user.favorites])
 
-    useEffect(() => {
-        console.log(searchTextFav)
-    }, [searchTextFav])
 
     return (
         <>
@@ -68,14 +58,15 @@ function Feed() {
                     <SidebarMenuCollapsed/>
                     <S.FeedContent>
                     { loading &&
-                            (<S.LoaderWrapper>
-                                <Loader
-                                    type="Oval"
-                                    color={COLORS.secondaryDark}
-                                    height={48}
-                                    width={48}
-                                />
-                            </S.LoaderWrapper>)}
+                        <S.LoaderWrapper>
+                            <Loader
+                                type="Oval"
+                                color={COLORS.secondaryDark}
+                                height={48}
+                                width={48}
+                            />
+                        </S.LoaderWrapper>
+                    }
                         <S.PiusSection>
                             {piuArray.map(piu => {
                                 const filter = searchTextFav.toUpperCase().trim();
@@ -84,20 +75,17 @@ function Feed() {
                                 const name = (piu.user.first_name + " " + piu.user.last_name).toUpperCase()
 
                                 if(searchTextFav != ""){
-                                    if(username.indexOf(filter) == -1 &&
-                                       text.indexOf(filter) == -1 &&
-                                       name.indexOf(filter) == -1)
-                                    return(<div key={piu.id}></div>);
+                                    if(!username.includes(filter) &&
+                                       !text.includes(filter) &&
+                                       !name.includes(filter))
+                                    return <></>
                                 }
 
-                                numberOfVisiblePius += 1;
-                                return (
-                                    <PiuContainer  key={piu.id} content={piu}/>
-                                )
+                                return  <PiuContainer  key={piu.id} content={piu}/>
                             })}
                         </S.PiusSection>
                         <S.UnsuccessfulSearchTag>
-                            {numberOfVisiblePius == 0 && !loading
+                            {piuArray.length === 0 && !loading
                                 ? "Ou vc n tem favorito, ou tá rolando um bug louco no código, mano, recarrega a página aí pra ver se vai (UX 10/10)"
                                 : ""}
                         </S.UnsuccessfulSearchTag>
@@ -108,4 +96,4 @@ function Feed() {
     );
 }
 
-export default Feed;
+export default Favorites;
